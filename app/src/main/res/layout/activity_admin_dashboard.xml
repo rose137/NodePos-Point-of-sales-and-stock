@@ -39,8 +39,8 @@
         android:background="?android:attr/windowBackground"
         app:menu="@menu/bottom_nav_menu_admin"
         app:labelVisibilityMode="labeled"
-        app:itemIconTint="@color/babyblue"
-        app:itemTextColor="@color/babyblue"
+        app:itemIconTint="#393838"
+        app:itemTextColor="#393838"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

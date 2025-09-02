@@ -107,13 +107,13 @@ public class adminDashboardActivity extends AppCompatActivity {
                             .replace(R.id.fragmentContainer, new QrisFragment())
                             .commit();
                     return true;
-//
-//                case R.id.nav_pengaturan:
-//                    getSupportFragmentManager()
-//                            .beginTransaction()
-//                            .replace(R.id.fragmentContainer, new PengaturanFragment())
-//                            .commit();
-//                    return true;
+
+                case R.id.nav_pengaturan:
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragmentContainer, new SettingFragment())
+                            .commit();
+                    return true;
             }
 
 

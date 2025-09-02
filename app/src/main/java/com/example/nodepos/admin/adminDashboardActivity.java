@@ -94,12 +94,12 @@ public class adminDashboardActivity extends AppCompatActivity {
                             .commit();
                     return true;
 
-//                case R.id.nav_history:
-//                    getSupportFragmentManager()
-//                            .beginTransaction()
-//                            .replace(R.id.fragmentContainer, new HistoryFragment())
-//                            .commit();
-//                    return true;
+                case R.id.nav_history:
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragmentContainer, new RiwayatFragment())
+                            .commit();
+                    return true;
 //
 //                case R.id.nav_qrcode:
 //                    getSupportFragmentManager()

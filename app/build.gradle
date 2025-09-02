@@ -44,4 +44,6 @@ dependencies {
     implementation 'com.android.volley:volley:1.2.1'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
 
+    implementation 'com.journeyapps:zxing-android-embedded:4.3.0' // scan
+    implementation 'com.google.zxing:core:3.5.2' // generate
 }

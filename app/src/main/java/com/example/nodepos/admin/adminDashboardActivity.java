@@ -100,13 +100,13 @@ public class adminDashboardActivity extends AppCompatActivity {
                             .replace(R.id.fragmentContainer, new RiwayatFragment())
                             .commit();
                     return true;
-//
-//                case R.id.nav_qrcode:
-//                    getSupportFragmentManager()
-//                            .beginTransaction()
-//                            .replace(R.id.fragmentContainer, new QrCodeFragment())
-//                            .commit();
-//                    return true;
+
+                case R.id.nav_qrcode:
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragmentContainer, new QrisFragment())
+                            .commit();
+                    return true;
 //
 //                case R.id.nav_pengaturan:
 //                    getSupportFragmentManager()

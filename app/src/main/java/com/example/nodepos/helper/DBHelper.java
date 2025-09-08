@@ -21,6 +21,8 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String TABLE_LOGIN = "login";
     private static final String TABLE_USER = "user";
     private static final String TABLE_ABSEN = "absen";
+    private static final String TABLE_PRODUCT = "products";
+
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -58,14 +60,25 @@ public class DBHelper extends SQLiteOpenHelper {
                 "tanggalAbsen TEXT," +
                 "waktuAbsen TEXT" +
                 ")");
-    }
 
+
+    // Tabel produk
+        db.execSQL("CREATE TABLE " + TABLE_PRODUCT + " (" +
+                "ProdukId TEXT PRIMARY KEY," +
+                "ProdukName TEXT," +
+                "Harga TEXT," +
+                "Stock TEXT," +
+                "Description TEXT," +
+                "Image TEXT" +
+                ")");
+}
     // Upgrade jika versi DB berubah
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOGIN);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ABSEN);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCT);
         onCreate(db);
     }
 
@@ -99,10 +112,10 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    // Ambil user berdasarkan UUID
-    public userModel getUserByUuid(String uuid) {
+    // Ambil user berdasarkan nik
+    public userModel getUserByNik(String uuid) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_USER, null, "uuid = ?", new String[]{uuid},
+        Cursor cursor = db.query(TABLE_USER, null, "nik = ?", new String[]{uuid},
                 null, null, null);
 
         if (cursor != null && cursor.moveToFirst()) {
@@ -124,6 +137,35 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return null;
+    }
+    public List<userModel> getUsers() {
+        List<userModel> userList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_USER, null, null, null, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                userModel user = new userModel(
+                        cursor.getString(cursor.getColumnIndexOrThrow("data")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("nik")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("firstName")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("lastName")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("fullName")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("email")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("password")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("position")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("role")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("isActive"))
+                );
+                userList.add(user);
+            } while(cursor.moveToNext());
+            cursor.close();
+        }
+
+        db.close();
+        return userList;
     }
 
     public void insertAbsen(String jenis,String tanggal, String waktu) {
@@ -151,6 +193,26 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return logs;
+    }
+
+// simpan produk
+public boolean insertProduct(String produkid,String name, String price, String stock, String desc, byte[] image) {
+    SQLiteDatabase db = this.getWritableDatabase();
+    ContentValues values = new ContentValues();
+    values.put("ProdukId", produkid);
+    values.put("ProdukName", name);
+    values.put("Harga", price);
+    values.put("Stock", stock);
+    values.put("description", desc);
+    values.put("image", image);
+
+    long result = db.insert(TABLE_PRODUCT, null, values);
+    return result != -1;
+}
+    // Ambil semua produk
+    public Cursor getAllProducts() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_PRODUCT, null);
     }
 
     // Hapus data login dan user (jika logout)

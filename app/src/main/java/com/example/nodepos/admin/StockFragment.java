@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nodepos.R;
+import com.example.nodepos.adapter.CategoryAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

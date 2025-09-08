@@ -46,6 +46,9 @@ public class SettingFragment extends Fragment {
 
         // Handle klik
         cardKelolaAkun.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), KelolaAkunActivity.class);
+            startActivity(intent);
+
             Toast.makeText(getContext(), "Kelola Akun diklik", Toast.LENGTH_SHORT).show();
         });
 

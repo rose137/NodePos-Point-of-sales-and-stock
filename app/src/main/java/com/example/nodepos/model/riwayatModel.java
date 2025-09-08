@@ -1,34 +1,33 @@
 package com.example.nodepos.model;
 
 public class riwayatModel {
-    private String invoice;
+    private String orderId;
     private String status;
+    private String totalAmount;
     private String date;
-    private String total;
 
 
 
-    public riwayatModel(String invoice, String status, String date, String total) {
-        this.invoice = invoice;
+    public riwayatModel(String orderId, String status,String totalAmount, String date) {
+        this.orderId = orderId;
         this.status = status;
+        this.totalAmount = totalAmount;
         this.date = date;
-        this.total = total;
     }
 
-
-    public String getInvoice() {
-        return invoice;
+    public String getOrderId() {
+        return orderId;
     }
 
     public String getStatus() {
         return status;
     }
 
-    public String getDate() {
-        return date;
+    public String getTotalAmount() {
+        return totalAmount;
     }
 
-    public String getTotal() {
-        return total;
+    public String getDate() {
+        return date;
     }
 }

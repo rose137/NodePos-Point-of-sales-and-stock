@@ -102,7 +102,10 @@ public class LoginActivity extends AppCompatActivity {
                                 .setPositiveButton("OK", null)
                                 .show();
                     } else {
-                        new LoginTask().execute(nikInput, passwordInput);
+                        startActivity(new Intent(LoginActivity.this, adminDashboardActivity.class));
+                        finish();
+
+                       // new LoginTask().execute(nikInput, passwordInput);
                     }
                 } catch (Exception e) {
                     new AlertDialog.Builder(LoginActivity.this)

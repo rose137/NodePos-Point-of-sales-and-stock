@@ -16,5 +16,7 @@
     <color name="status_process">#2196F3</color>   <!-- Biru -->
     <color name="status_deliver">#FFEB3B</color>   <!-- Kuning -->
     <color name="status_default">#9E9E9E</color>   <!-- Abu-abu -->
-
+    <color name="gray_200">#EEEEEE</color>
+    <color name="gray_500">#9E9E9E</color>
+    <color name="gray_600">#757575</color>
 </resources>

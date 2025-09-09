@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nodepos.R;
 import com.example.nodepos.model.CategoryModel;
+import com.example.nodepos.model.productModel;
+import com.example.nodepos.repository.ProductDummyRepository;
 
 import java.util.List;
 
@@ -39,6 +41,21 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
         holder.bind(categoryList.get(position), listener);
+        CategoryModel category = categoryList.get(position);
+
+
+        // Hitung stock total per kategori
+        int totalStock = 0;
+        for (productModel p : ProductDummyRepository.getProductDummyList()) {
+            if (category.getKategoriId().equals(p.getKategoriId())) {
+                totalStock += p.getStock(); // pakai getter stock
+            }
+        }
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(category);
+            }
+        });
     }
 
     @Override
@@ -59,7 +76,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
         public void bind(CategoryModel model, OnItemClickListener listener) {
             icon.setImageResource(model.getIconResId());
-            title.setText(model.getTitle());
+            title.setText(model.getKategoriName());
             subtitle.setText(model.getSubtitle());
 
             itemView.setOnClickListener(v -> {

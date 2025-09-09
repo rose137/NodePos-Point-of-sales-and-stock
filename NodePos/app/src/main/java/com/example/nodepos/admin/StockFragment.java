@@ -14,8 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.nodepos.R;
 import com.example.nodepos.adapter.CategoryAdapter;
 import com.example.nodepos.model.CategoryModel;
+import com.example.nodepos.model.productModel;
+import com.example.nodepos.produk.ProductListActivity;
+import com.example.nodepos.repository.CategoryRepository;
+import com.example.nodepos.repository.ProductDummyRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class StockFragment extends Fragment {
@@ -36,34 +39,28 @@ public class StockFragment extends Fragment {
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2)); // 2 kolom
 
         List<CategoryModel> categoryList = getCategoryList();
+        List<productModel> allProducts = ProductDummyRepository.getProductDummyList();
         CategoryAdapter adapter = new CategoryAdapter(categoryList, new CategoryAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(CategoryModel category) {
-                if (category.getTitle().equals("Kebutuhan Ibu & Anak")) {
-                    Intent intent = new Intent(getContext(), CategoryAddActivity.class);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(getContext(), "Clicked: " + category.getTitle(), Toast.LENGTH_SHORT).show();
-                }
+
+                // Klik kategori → buka ProductListActivity sesuai category_id
+                Intent intent = new Intent(getContext(), ProductListActivity.class);
+                intent.putExtra("category_id", category.getKategoriId()); // P001, P002, dll
+                startActivity(intent);
+//
+//                Intent intent = new Intent(getContext(), ProductListActivity.class);
+//                startActivity(intent);
             }
         });
+
         recyclerView.setAdapter(adapter);
 
         return view;
     }
 
     private List<CategoryModel> getCategoryList() {
-        List<CategoryModel> list = new ArrayList<>();
-        list.add(new CategoryModel(R.drawable.ibubayianak, "Kebutuhan Ibu & Anak", "8000+ Stock"));
-        list.add(new CategoryModel(R.drawable.produksegar2, "Produk Segar & Beku", "8000+ Stock"));
-        list.add(new CategoryModel(R.drawable.minuman, "Minuman", "8000+ Stock"));
-        list.add(new CategoryModel(R.drawable.kebutuhanrumahtangga, "Kebutuhan Rumah Tangga", "8000+ Stock"));
-        list.add(new CategoryModel(R.drawable.petfood, "Pet Food", "8000+ Stock"));
-        list.add(new CategoryModel(R.drawable.personalcare, "Personal Care", "8000+ Stock"));
-        list.add(new CategoryModel(R.drawable.makanan, "Makanan", "8000+ Stock"));
-        list.add(new CategoryModel(R.drawable.kebutuhandapur, "Kebutuhan Dapur", "8000+ Stock"));
-        list.add(new CategoryModel(R.drawable.kesehatan, "Kesehatan", "8000+ Stock"));
-        list.add(new CategoryModel(R.drawable.lifestyle, "Life Style", "8000+ Stock"));
+        List<CategoryModel> list = CategoryRepository.getCategoryList();
         return list;
     }
 

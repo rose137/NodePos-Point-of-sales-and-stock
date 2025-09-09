@@ -18,13 +18,14 @@ import android.widget.Toast;
 
 import com.example.nodepos.R;
 import com.example.nodepos.helper.DBHelper;
-import com.example.nodepos.model.CategoryAddModel;
+import com.example.nodepos.model.CategoryModel;
+import com.example.nodepos.produk.ProductListActivity;
+import com.example.nodepos.repository.CategoryRepository;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -61,31 +62,21 @@ public class CategoryAddActivity extends AppCompatActivity {
 
         AutoCompleteTextView etKategori = findViewById(R.id.etKategori);
         // Data kategori (id + nama)
-        List<CategoryAddModel> kategoriItems = new ArrayList<>();
-        kategoriItems.add(new CategoryAddModel("P0001", "Kebutuhan Ibu & Anak"));
-        kategoriItems.add(new CategoryAddModel("P0002", "Produk Segar & Beku"));
-        kategoriItems.add(new CategoryAddModel("P0003", "Minuman"));
-        kategoriItems.add(new CategoryAddModel("P0004", "Kebutuhan Rumah Tangga"));
-        kategoriItems.add(new CategoryAddModel("P0005", "Pet Food"));
-        kategoriItems.add(new CategoryAddModel("P0006", "Personal Care"));
-        kategoriItems.add(new CategoryAddModel("P0007", "Makanan"));
-        kategoriItems.add(new CategoryAddModel("P0008", "Kebutuhan Dapur"));
-        kategoriItems.add(new CategoryAddModel("P0009", "Kesehatan"));
-        kategoriItems.add(new CategoryAddModel("P0010", "Life Style"));
-
+        List<CategoryModel> list = CategoryRepository.getCategoryList();
         // Adapter pakai CategoryItem, tapi karena toString() return name → yang tampil hanya nama
-        ArrayAdapter<CategoryAddModel> adapter = new ArrayAdapter<>(
+        ArrayAdapter<CategoryModel> adapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_dropdown_item_1line,
-                kategoriItems
+                list
         );
+
         etKategori.setAdapter(adapter);
 
         // Event saat user memilih item
         etKategori.setOnItemClickListener((parent, view, position, id) -> {
-            CategoryAddModel selected = (CategoryAddModel) parent.getItemAtPosition(position);
-            etKategoriId = selected.getId();
-            etKategoriName = selected.getName();
+            CategoryModel selected = (CategoryModel) parent.getItemAtPosition(position);
+            etKategoriId = selected.getKategoriId();
+            etKategoriName = selected.getProductName();
 //            Toast.makeText(this,
 //                    "Dipilih: " + selected.getId() + " (ID: " + selected.getName() + ")",
 //                    Toast.LENGTH_SHORT).show();
@@ -159,7 +150,9 @@ public class CategoryAddActivity extends AppCompatActivity {
 
         if (inserted) {
             Toast.makeText(this, "Produk berhasil disimpan dengan ID: " + produkId, Toast.LENGTH_LONG).show();
+            startActivity(new Intent(CategoryAddActivity.this, ProductListActivity.class));
             finish();
+
         } else {
             Toast.makeText(this, "Gagal menyimpan produk", Toast.LENGTH_SHORT).show();
         }

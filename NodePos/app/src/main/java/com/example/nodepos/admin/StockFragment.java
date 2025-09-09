@@ -1,5 +1,6 @@
 package com.example.nodepos.admin;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nodepos.R;
 import com.example.nodepos.adapter.CategoryAdapter;
+import com.example.nodepos.model.CategoryModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,11 +39,16 @@ public class StockFragment extends Fragment {
         CategoryAdapter adapter = new CategoryAdapter(categoryList, new CategoryAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(CategoryModel category) {
-                Toast.makeText(getContext(), "Clicked: " + category.getTitle(), Toast.LENGTH_SHORT).show();
+                if (category.getTitle().equals("Kebutuhan Ibu & Anak")) {
+                    Intent intent = new Intent(getContext(), CategoryAddActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getContext(), "Clicked: " + category.getTitle(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
-        
         recyclerView.setAdapter(adapter);
+
         return view;
     }
 

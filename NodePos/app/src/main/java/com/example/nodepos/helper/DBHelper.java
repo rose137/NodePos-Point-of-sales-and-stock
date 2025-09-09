@@ -15,7 +15,7 @@ import java.util.List;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "nodepos";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
     // Nama tabel
     private static final String TABLE_LOGIN = "login";
@@ -66,6 +66,8 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + TABLE_PRODUCT + " (" +
                 "ProdukId TEXT PRIMARY KEY," +
                 "ProdukName TEXT," +
+                "KategoriId TEXT," +
+                "KategoriName TEXT," +
                 "Harga TEXT," +
                 "Stock TEXT," +
                 "Description TEXT," +
@@ -196,11 +198,13 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 // simpan produk
-public boolean insertProduct(String produkid,String name, String price, String stock, String desc, byte[] image) {
+public boolean insertProduct(String produkid,String name,String ketegoriId, String kategoriName, String price, String stock, String desc, byte[] image) {
     SQLiteDatabase db = this.getWritableDatabase();
     ContentValues values = new ContentValues();
     values.put("ProdukId", produkid);
     values.put("ProdukName", name);
+    values.put("KategoriId", ketegoriId);
+    values.put("KategoriName", kategoriName);
     values.put("Harga", price);
     values.put("Stock", stock);
     values.put("description", desc);

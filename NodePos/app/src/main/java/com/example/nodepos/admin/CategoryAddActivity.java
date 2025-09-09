@@ -10,18 +10,23 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.nodepos.R;
 import com.example.nodepos.helper.DBHelper;
+import com.example.nodepos.model.CategoryAddModel;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 public class CategoryAddActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
@@ -33,7 +38,8 @@ public class CategoryAddActivity extends AppCompatActivity {
     private Uri imageUri;
     private Bitmap selectedBitmap;
     private DBHelper dbHelper;
-
+    String etKategoriId;
+    String etKategoriName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +58,38 @@ public class CategoryAddActivity extends AppCompatActivity {
 
         btnUpload.setOnClickListener(v -> openGallery());
         btnSave.setOnClickListener(v -> saveProduct());
+
+        AutoCompleteTextView etKategori = findViewById(R.id.etKategori);
+        // Data kategori (id + nama)
+        List<CategoryAddModel> kategoriItems = new ArrayList<>();
+        kategoriItems.add(new CategoryAddModel("P0001", "Kebutuhan Ibu & Anak"));
+        kategoriItems.add(new CategoryAddModel("P0002", "Produk Segar & Beku"));
+        kategoriItems.add(new CategoryAddModel("P0003", "Minuman"));
+        kategoriItems.add(new CategoryAddModel("P0004", "Kebutuhan Rumah Tangga"));
+        kategoriItems.add(new CategoryAddModel("P0005", "Pet Food"));
+        kategoriItems.add(new CategoryAddModel("P0006", "Personal Care"));
+        kategoriItems.add(new CategoryAddModel("P0007", "Makanan"));
+        kategoriItems.add(new CategoryAddModel("P0008", "Kebutuhan Dapur"));
+        kategoriItems.add(new CategoryAddModel("P0009", "Kesehatan"));
+        kategoriItems.add(new CategoryAddModel("P0010", "Life Style"));
+
+        // Adapter pakai CategoryItem, tapi karena toString() return name → yang tampil hanya nama
+        ArrayAdapter<CategoryAddModel> adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_dropdown_item_1line,
+                kategoriItems
+        );
+        etKategori.setAdapter(adapter);
+
+        // Event saat user memilih item
+        etKategori.setOnItemClickListener((parent, view, position, id) -> {
+            CategoryAddModel selected = (CategoryAddModel) parent.getItemAtPosition(position);
+            etKategoriId = selected.getId();
+            etKategoriName = selected.getName();
+//            Toast.makeText(this,
+//                    "Dipilih: " + selected.getId() + " (ID: " + selected.getName() + ")",
+//                    Toast.LENGTH_SHORT).show();
+        });
     }
 
     private String generateProductId(String kodeProduk) {
@@ -107,7 +145,7 @@ public class CategoryAddActivity extends AppCompatActivity {
         String stock = etStock.getText().toString().trim();
         String description = etDescription.getText().toString().trim();
 
-        if (name.isEmpty() || price.isEmpty() || stock.isEmpty() || description.isEmpty() || selectedBitmap == null) {
+        if (name.isEmpty() || price.isEmpty() || stock.isEmpty() || description.isEmpty()) {
             Toast.makeText(this, "Lengkapi semua data produk!", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -117,7 +155,7 @@ public class CategoryAddActivity extends AppCompatActivity {
         selectedBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] imageBytes = stream.toByteArray();
 
-        boolean inserted = dbHelper.insertProduct(produkId, name, price, stock, description, imageBytes);
+        boolean inserted = dbHelper.insertProduct(produkId, name,etKategoriId,etKategoriName, price, stock, description, imageBytes);
 
         if (inserted) {
             Toast.makeText(this, "Produk berhasil disimpan dengan ID: " + produkId, Toast.LENGTH_LONG).show();

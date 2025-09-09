@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nodepos.R;
-import com.example.nodepos.admin.CategoryModel;
+import com.example.nodepos.model.CategoryModel;
 
 import java.util.List;
 

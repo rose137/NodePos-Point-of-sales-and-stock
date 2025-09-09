@@ -1,4 +1,4 @@
-package com.example.nodepos.admin;
+package com.example.nodepos.model;
 
 public class CategoryModel {
     private int iconResId;
